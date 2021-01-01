@@ -74,12 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
            search ?   search_result_widget():Container()
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: _incrementCounter,
+    //     tooltip: 'Increment',
+    //     child: Icon(Icons.add),
+    //   ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -113,7 +113,7 @@ catch(error){
       Row(
         children: [
           Expanded(
-            flex: 12,
+            flex: 18,
             child: TextField(
               textInputAction: TextInputAction.search,
               onSubmitted: (value) {
@@ -136,14 +136,20 @@ catch(error){
             ),
           ),
           Expanded(
-            flex: 1,
-            child: InkWell(
-                onTap:() {
-                  setState(() {
-                    search= true;
-                  });
-                },
-                child: Icon(Icons.search)),
+            flex: 3,
+            child: Container(
+              height: MediaQuery.of(context).size.height/16.5,
+              decoration: BoxDecoration(
+                color: light_blue
+              ),
+              child: InkWell(
+                  onTap:() {
+                    setState(() {
+                      search= true;
+                    });
+                  },
+                  child: Icon(Icons.search,color: Colors.white,size: 30,)),
+            ),
           )
         ],
       ),

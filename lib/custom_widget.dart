@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:interview_demo/Daos/PageDetails.dart';
 import 'package:interview_demo/constants.dart';
@@ -45,7 +46,28 @@ SearchItems(PageDetails pageDetails):super(key:Key(pageDetails.pageid.toString()
                 ),
                 Expanded(
                 flex: 1,
-                    child: Text(mpageDetails.title,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w200),)),
+                    child: Column(children:[
+                      Expanded(
+                        flex:2,
+                        child: Text(mpageDetails.title,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: InkWell(
+                          child:RichText( text: TextSpan (
+                            text:"visit wikipedia page ",style: new TextStyle(color: Colors.blue,fontSize: h4 * MediaQuery.of(context).textScaleFactor),recognizer:TapGestureRecognizer()
+                                    ..onTap=(){
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>webViewWidget(mpageDetails.title, wiki_pedia_page.replaceAll("%s",mpageDetails.title ))));
+                          }
+                          ) ) ,
+                        ),
+                      )
+
+
+
+              ]
+                    )),
                 //Text(mpageDetails.terms != null ? mpageDetails.terms.description[0]:'')
               ],
             ),
