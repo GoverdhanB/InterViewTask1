@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+const timeout = const Duration(seconds: 3);
+const ms = const Duration(milliseconds: 1);
 class webViewWidget extends StatefulWidget {
  String title,url;
 
@@ -49,9 +51,8 @@ appBar: AppBar(
              },
              onPageFinished: (String url){
                print('Page finished loading: $url');
-               setState(() {
-                 loading = false;
-               });
+startTimeout(100);
+
              },
              gestureNavigationEnabled: true,
            ),
@@ -74,5 +75,15 @@ appBar: AppBar(
             SnackBar(content: Text(message.message)),
           );
         });
+  }
+
+  startTimeout([int milliseconds]) {
+    var duration = milliseconds == null ? timeout : ms * milliseconds;
+    return new Timer(duration, handleTimeout);
+  }
+  handleTimeout() {  // callback function
+    setState(() {
+        loading = false;
+ });
   }
 }
