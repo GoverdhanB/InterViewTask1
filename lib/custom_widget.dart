@@ -34,9 +34,7 @@ SearchItems(PageDetails pageDetails):super(key:Key(pageDetails.pageid.toString()
                 FadeInImage.assetNetwork(
 imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
             return Image.asset("assets/images/placeholder.png");
-}
-
-                  ,
+                       },
                   placeholder: defaultTargetPlatform == TargetPlatform.iOS
                       ? 'assets/images/loading.gif'
                       : 'assets/images/loading_android2.gif',
@@ -54,7 +52,10 @@ imageErrorBuilder: (BuildContext context, Object exception, StackTrace stackTrac
                     child: Column(children:[
                       Expanded(
                         flex:2,
-                        child: Text(mpageDetails.title,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w200),
+                        child: Wrap(
+                          children:[ Text(mpageDetails.title,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w200),
+                        ),
+                      ]
                         ),
                       ),
                       Expanded(
