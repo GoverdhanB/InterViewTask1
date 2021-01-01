@@ -1,7 +1,8 @@
 
+import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
-
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:interview_demo/Daos/PageDetails.dart';
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -43,12 +46,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool search = false;
+  String _connectionStatus = 'Unknown';
   TextEditingController etSearchController = new TextEditingController();
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
   void _incrementCounter() {
     setState(() {
 
       _counter++;
     });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -64,6 +75,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Center(
+              child:
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          height: 90,
+          width: 90,
+        decoration: BoxDecoration(
+
+        ),
+        child: CircleAvatar(
+              radius: 25,
+              backgroundImage:AssetImage("assets/images/world1.jpeg") ,
+            )
+            )),
+            SizedBox(height: 20,),
             search_widget(),
            SizedBox(
              height: MediaQuery.of(context).size.height/50,
@@ -81,6 +107,36 @@ class _MyHomePageState extends State<MyHomePage> {
     //     child: Icon(Icons.add),
     //   ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+  Future<void> initConnectivity() async {
+    ConnectivityResult result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    switch (result) {
+      case ConnectivityResult.wifi:
+      case ConnectivityResult.mobile:
+      case ConnectivityResult.none:
+        setState(() => _connectionStatus = result.toString());
+        break;
+      default:
+        setState(() => _connectionStatus = 'Failed to get connectivity.');
+        break;
+    }
   }
 
  Future<List<PageDetails>> getPageDetails(url)  async{
